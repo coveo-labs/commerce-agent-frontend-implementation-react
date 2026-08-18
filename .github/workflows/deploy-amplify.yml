@@ -1,0 +1,79 @@
+name: Deploy to Amplify
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: amplify-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      AMPLIFY_APP_ID: ${{ vars.AMPLIFY_APP_ID }}
+      AMPLIFY_BRANCH: ${{ vars.AMPLIFY_BRANCH }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.19.0
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Deploy static bundle to Amplify
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          for variable in AWS_REGION AMPLIFY_APP_ID AMPLIFY_BRANCH AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY; do
+            if [ -z "${!variable}" ]; then
+              echo "Required GitHub Actions secret or variable is missing: ${variable}" >&2
+              exit 1
+            fi
+          done
+
+          file_map="$({
+            find dist -type f -print0 | while IFS= read -r -d '' file; do
+              relative_path="${file#dist/}"
+              printf '%s\t%s\n' "$relative_path" "$(md5sum "$file" | cut -d ' ' -f 1)"
+            done
+          } | jq -Rn '[inputs | split("\t") | {key: .[0], value: .[1]}] | from_entries')"
+
+          aws amplify create-deployment \
+            --app-id "$AMPLIFY_APP_ID" \
+            --branch-name "$AMPLIFY_BRANCH" \
+            --file-map "$file_map" \
+            --region "$AWS_REGION" \
+            > deployment.json
+
+          jq -r '.fileUploadUrls | to_entries[] | [.key, .value] | @tsv' deployment.json |
+            while IFS=$'\t' read -r relative_path upload_url; do
+              curl --fail --silent --show-error --request PUT \
+                --upload-file "dist/$relative_path" \
+                "$upload_url"
+            done
+
+          aws amplify start-deployment \
+            --app-id "$AMPLIFY_APP_ID" \
+            --branch-name "$AMPLIFY_BRANCH" \
+            --job-id "$(jq -r '.jobId' deployment.json)" \
+            --region "$AWS_REGION"
