@@ -1550,6 +1550,20 @@ select {
   gap: 14px;
 }
 
+.skeleton {
+  display: block;
+  border-radius: 6px;
+  background: linear-gradient(90deg, var(--shimmer-a), var(--shimmer-b), var(--shimmer-a));
+  background-size: 200% 100%;
+  animation: shimmer 1.25s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}
+
 .product-image {
   display: block;
   width: 100%;
@@ -1611,12 +1625,26 @@ select {
 }
 
 .loading-card {
-  min-height: 220px;
-  background:
-    linear-gradient(90deg, var(--shimmer-a), var(--shimmer-b), var(--shimmer-a));
-  background-size: 200% 100%;
-  animation: shimmer 1.25s linear infinite;
+  min-height: 290px;
+  gap: 10px;
 }
+
+.skeleton-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  margin-bottom: 2px;
+  border-radius: 14px;
+}
+
+.skeleton-line {
+  height: 14px;
+}
+
+.skeleton-brand { width: 38%; height: 10px; }
+.skeleton-product-name { width: 80%; }
+.skeleton-card-footer { display: flex; justify-content: space-between; gap: 12px; margin-top: auto; padding-top: 8px; }
+.skeleton-price { width: 36%; }
+.skeleton-cta { width: 30%; }
 
 .swatch {
   width: 100%;
@@ -1748,13 +1776,27 @@ select {
 }
 
 .loading-table {
-  height: 220px;
+  overflow-x: auto;
   border-radius: 16px;
-  background:
-    linear-gradient(90deg, var(--shimmer-a), var(--shimmer-b), var(--shimmer-a));
-  background-size: 200% 100%;
-  animation: shimmer 1.25s linear infinite;
+  border: 1px solid rgba(16, 24, 40, 0.1);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 1px;
 }
+
+.comparison-skeleton-grid {
+  display: grid;
+  grid-template-columns: minmax(120px, auto) repeat(3, minmax(140px, 1fr));
+  min-width: 580px;
+}
+
+.comparison-skeleton-grid .skeleton {
+  margin: 12px 14px;
+}
+
+.skeleton-table-label { width: 70%; }
+.skeleton-table-heading { width: 75%; }
+.skeleton-table-value { width: 60%; }
+.skeleton-table-image { width: 80%; height: 88px; border-radius: 12px; }
 
 /* ---------------------------------------------------------------------------
    Comparison summary
@@ -1809,12 +1851,21 @@ select {
 .bundle-loading-card {
   border-radius: 18px;
   padding: 16px;
-  min-height: 180px;
-  background:
-    linear-gradient(90deg, var(--shimmer-a), var(--shimmer-b), var(--shimmer-a));
-  background-size: 200% 100%;
-  animation: shimmer 1.25s linear infinite;
+  border: 1px solid rgba(16, 24, 40, 0.12);
+  background: rgba(255, 255, 255, 0.85);
 }
+
+.skeleton-bundle-title { width: 35%; height: 22px; }
+.skeleton-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0; }
+.skeleton-tab { width: 85px; height: 34px; border-radius: 8px; }
+.skeleton-bundle-description { width: 80%; height: 12px; margin-bottom: 6px; }
+.skeleton-bundle-description.short { width: 55%; }
+.bundle-skeleton-slots { margin-top: 16px; }
+.skeleton-slot { min-height: 180px; display: flex; flex-direction: column; gap: 8px; }
+.skeleton-slot-image { width: 100%; aspect-ratio: 4 / 3; border-radius: 10px; }
+.skeleton-slot-label { width: 42%; height: 10px; margin-top: 2px; }
+.skeleton-slot-name { width: 80%; }
+.skeleton-slot-price { width: 35%; margin-top: auto; }
 
 .bundle-head h4,
 .bundle-head p {
@@ -1917,7 +1968,7 @@ select {
 }
 
 .actions button,
-.loading-row span {
+.skeleton-action {
   border-radius: 999px;
   padding: 10px 14px;
 }
@@ -1935,14 +1986,10 @@ select {
   background: rgba(232, 236, 255, 1);
 }
 
-.loading-row span {
-  display: inline-block;
+.skeleton-action {
   width: 160px;
   height: 38px;
-  background:
-    linear-gradient(90deg, var(--shimmer-a), var(--shimmer-b), var(--shimmer-a));
-  background-size: 200% 100%;
-  animation: shimmer 1.25s linear infinite;
+  box-sizing: border-box;
 }
 
 /* ---------------------------------------------------------------------------
@@ -2082,19 +2129,36 @@ select {
 }
 
 .research-loading {
-  height: 240px;
-  border-radius: 16px;
-  background:
-    linear-gradient(90deg, var(--shimmer-a), var(--shimmer-b), var(--shimmer-a));
-  background-size: 200% 100%;
-  animation: shimmer 1.25s linear infinite;
+  display: grid;
+  grid-template-columns: minmax(220px, 320px) minmax(0, 1fr);
+  gap: 28px;
 }
+
+.skeleton-research-image { width: 100%; aspect-ratio: 1 / 1; border-radius: 12px; margin-bottom: 12px; }
+.skeleton-research-product-name { width: 78%; }
+.skeleton-research-price { width: 35%; height: 16px; margin-top: 6px; }
+.skeleton-research-summary { display: flex; align-items: center; gap: 14px; }
+.skeleton-research-icon { flex: 0 0 44px; width: 44px; height: 44px; border-radius: 12px; }
+.skeleton-research-copy { flex: 1; display: grid; gap: 6px; }
+.skeleton-research-heading { width: 52%; }
+.skeleton-research-subheading { width: 38%; height: 12px; }
+.skeleton-research-lines { display: grid; gap: 10px; padding: 0 18px; }
+.skeleton-research-line { height: 12px; }
+.skeleton-research-line.line-1 { width: 96%; }
+.skeleton-research-line.line-2 { width: 92%; }
+.skeleton-research-line.line-3 { width: 88%; }
+.skeleton-research-line.line-4 { width: 82%; }
+.skeleton-research-line.line-5 { width: 76%; }
 
 /* ---------------------------------------------------------------------------
    Responsive tweaks (ported from the Angular app.css)
    --------------------------------------------------------------------------- */
 
 @media (max-width: 720px) {
+  .research-loading {
+    grid-template-columns: 1fr;
+  }
+
   .shell {
     padding-inline: 16px;
   }

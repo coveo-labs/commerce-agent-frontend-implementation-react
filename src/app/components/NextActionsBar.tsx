@@ -1,4 +1,5 @@
 import type { NextActionsBarSurface } from '../models';
+import { Skeleton, SkeletonReveal } from './Skeleton';
 
 type NextActionsBarProps = {
   surface: NextActionsBarSurface;
@@ -30,7 +31,9 @@ export function NextActionsBar({ surface, onSelectAction }: NextActionsBarProps)
       ) : (
         <div className="loading-row">
           {PLACEHOLDERS.map((index) => (
-            <span key={index}></span>
+            <SkeletonReveal key={index} delay={index * 0.14}>
+              <Skeleton className="skeleton-action" />
+            </SkeletonReveal>
           ))}
         </div>
       )}

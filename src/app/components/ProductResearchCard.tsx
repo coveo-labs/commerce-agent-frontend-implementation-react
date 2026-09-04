@@ -1,5 +1,6 @@
 import { formatPrice } from '../formatting';
 import type { ProductResearchCardSurface } from '../models';
+import { Skeleton, SkeletonReveal } from './Skeleton';
 
 type ProductResearchCardProps = {
   surface: ProductResearchCardSurface;
@@ -12,7 +13,33 @@ export function ProductResearchCard({ surface }: ProductResearchCardProps) {
   return (
     <section className="surface research">
       {surface.isLoading ? (
-        <div className="research-loading"></div>
+        <div className="research-loading" role="status" aria-label="Loading product research">
+          <SkeletonReveal delay={0.1}>
+            <article className="research-product">
+              <Skeleton className="skeleton-research-image" />
+              <Skeleton className="skeleton-line skeleton-research-product-name" />
+              <Skeleton className="skeleton-line skeleton-research-price" />
+            </article>
+          </SkeletonReveal>
+          <article className="research-content">
+            <SkeletonReveal delay={0.35}>
+              <section className="research-summary-card skeleton-research-summary">
+                <Skeleton className="skeleton-research-icon" />
+                <div className="skeleton-research-copy">
+                  <Skeleton className="skeleton-line skeleton-research-heading" />
+                  <Skeleton className="skeleton-line skeleton-research-subheading" />
+                </div>
+              </section>
+            </SkeletonReveal>
+            <div className="skeleton-research-lines">
+              {Array.from({ length: 5 }, (_, index) => (
+                <SkeletonReveal key={index} delay={0.55 + index * 0.1}>
+                  <Skeleton className={`skeleton-line skeleton-research-line line-${index + 1}`} />
+                </SkeletonReveal>
+              ))}
+            </div>
+          </article>
+        </div>
       ) : (
         <div className="research-grid">
           <article className="research-product">
