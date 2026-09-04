@@ -1,5 +1,6 @@
 import { formatPrice } from '../formatting';
 import type { BundleDisplaySurface, BundleDisplayTier } from '../models';
+import { Skeleton, SkeletonReveal } from './Skeleton';
 
 type BundleDisplayProps = {
   surface: BundleDisplaySurface;
@@ -15,7 +16,36 @@ export function BundleDisplay({ surface }: BundleDisplayProps) {
 
       {surface.isLoading ? (
         <div className="bundle-loading-grid">
-          <div className="bundle-loading-card"></div>
+          <article className="bundle-loading-card" role="status" aria-label="Loading bundle">
+            <SkeletonReveal delay={0.1}>
+              <Skeleton className="skeleton-line skeleton-bundle-title" />
+            </SkeletonReveal>
+            <SkeletonReveal delay={0.3}>
+              <div className="skeleton-tabs">
+                {Array.from({ length: 3 }, (_, index) => (
+                  <Skeleton key={index} className="skeleton-tab" />
+                ))}
+              </div>
+            </SkeletonReveal>
+            <SkeletonReveal delay={0.5}>
+              <Skeleton className="skeleton-line skeleton-bundle-description" />
+            </SkeletonReveal>
+            <SkeletonReveal delay={0.58}>
+              <Skeleton className="skeleton-line skeleton-bundle-description short" />
+            </SkeletonReveal>
+            <div className="slot-grid bundle-skeleton-slots">
+              {Array.from({ length: 3 }, (_, index) => (
+                <SkeletonReveal key={index} delay={0.75 + index * 0.18}>
+                  <div className="slot skeleton-slot">
+                    <Skeleton className="skeleton-slot-image" />
+                    <Skeleton className="skeleton-line skeleton-slot-label" />
+                    <Skeleton className="skeleton-line skeleton-slot-name" />
+                    <Skeleton className="skeleton-line skeleton-slot-price" />
+                  </div>
+                </SkeletonReveal>
+              ))}
+            </div>
+          </article>
         </div>
       ) : (
         surface.bundles.map((bundle) => (

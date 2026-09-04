@@ -28,7 +28,7 @@ In this repo, `mock` means the Angular storefront does not call a live commerce 
 - AG-UI-style lifecycle and text events
 - `ACTIVITY_SNAPSHOT` payloads containing A2UI operations
 - structured commerce surfaces for discovery, comparison, bundle curation, and next actions
-- loading-first behavior where skeleton surfaces appear before final structured content
+- loading-first behavior where skeleton surfaces appear before final structured content; placeholders should match the eventual surface layout rather than use a generic spinner
 
 The purpose of `mock` is to let a developer validate the storefront-side implementation before the live backend is available. It is a frontend integration reference, not a production data source.
 
@@ -233,6 +233,9 @@ For most storefront implementations, a good default is:
 
 - use text and A2UI events for the main shopper experience
 - use tool-call and reasoning events for progress and step awareness
+- render a surface skeleton as soon as the loading A2UI update arrives, then replace it with the completed surface without a disruptive layout shift
+- reserve product, table, bundle, and research layouts with content-shaped placeholders; do not present fake catalog data as a loading state
+- respect `prefers-reduced-motion` for shimmer or entry animations
 
 ## Angular Architecture
 

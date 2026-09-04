@@ -104,6 +104,42 @@ header value from one of the requests, paste it into the panel. (See
 
 ---
 
+## Loading surfaces and motion
+
+The agent can send a loading A2UI surface before it sends the completed
+surface. Preserve that loading-first behavior in an integration: it gives the
+shopper immediate, contextual feedback while product retrieval and generation
+continue. The parser removes a skeleton surface when its completed counterpart
+arrives, so renderers only need to respect `surface.isLoading`.
+
+This reference renders **content-shaped skeletons**, not a single generic
+loading block. Each skeleton should reserve the space and hierarchy of the
+result it represents:
+
+| Surface | Loading placeholder |
+|---|---|
+| Product carousel | Product cards with image, brand, name, price, and CTA bars. |
+| Comparison table | Column headings, image cells, attribute labels, and value cells. |
+| Bundle display | Title, tabs, description, and product-slot cards. |
+| Product research | Product image/details beside summary and feature-copy bars. |
+| Next actions | Pill-shaped action controls. |
+
+The skeleton shimmer is defined in [`src/styles.css`](src/styles.css). Entry
+animation uses [`motion`](https://motion.dev/) through the shared
+[`SkeletonReveal`](src/app/components/Skeleton.tsx) wrapper: elements slide in
+from the right and stagger by surface so the loading state feels progressive,
+rather than appearing as one static block. Keep animations brief and
+non-blocking. The CSS shimmer is disabled when the shopper has enabled
+`prefers-reduced-motion`; any replacement animation must preserve that
+preference.
+
+When adding a new A2UI surface, implement its loading shape at the same time
+as its completed renderer. Do not delay showing a surface until all of its
+data is available, and do not show fake product names, prices, or imagery in a
+skeleton state.
+
+---
+
 ## Configuration — `discovery-config.ts`
 
 [`src/app/discovery-config.ts`](src/app/discovery-config.ts) is the single

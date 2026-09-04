@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import { formatPrice } from '../formatting';
 import type { ComparisonTableSurface } from '../models';
+import { Skeleton, SkeletonReveal } from './Skeleton';
 
 type ComparisonTableProps = {
   surface: ComparisonTableSurface;
@@ -17,7 +18,35 @@ export function ComparisonTable({ surface }: ComparisonTableProps) {
       </header>
 
       {surface.isLoading ? (
-        <div className="loading-table"></div>
+        <div className="loading-table" role="status" aria-label="Loading comparison">
+          <div className="comparison-skeleton-grid">
+            <SkeletonReveal delay={0.1}>
+              <Skeleton className="skeleton-line skeleton-table-label" />
+            </SkeletonReveal>
+            {Array.from({ length: 3 }, (_, index) => (
+              <SkeletonReveal key={index} delay={0.2 + index * 0.12}>
+                <Skeleton className="skeleton-line skeleton-table-heading" />
+              </SkeletonReveal>
+            ))}
+            {Array.from({ length: 5 }, (_, rowIndex) => (
+              <Fragment key={rowIndex}>
+                <SkeletonReveal delay={0.55 + rowIndex * 0.18}>
+                  <Skeleton className="skeleton-line skeleton-table-label" />
+                </SkeletonReveal>
+                {Array.from({ length: 3 }, (_, columnIndex) => (
+                  <SkeletonReveal
+                    key={columnIndex}
+                    delay={0.62 + rowIndex * 0.18 + columnIndex * 0.07}
+                  >
+                    <Skeleton
+                      className={rowIndex === 0 ? 'skeleton-table-image' : 'skeleton-line skeleton-table-value'}
+                    />
+                  </SkeletonReveal>
+                ))}
+              </Fragment>
+            ))}
+          </div>
+        </div>
       ) : (
         <div className="comparison-grid" style={{ gridTemplateColumns: gridColumns }}>
           <div className="comparison-cell comparison-corner"></div>

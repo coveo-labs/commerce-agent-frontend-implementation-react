@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import { productCta } from '../discovery-config';
 import { formatPrice } from '../formatting';
 import type { ProductCarouselSurface, ProductRecord } from '../models';
+import { Skeleton, SkeletonReveal } from './Skeleton';
 
 type ProductCarouselProps = {
   surface: ProductCarouselSurface;
@@ -68,7 +69,17 @@ export function ProductCarousel({ surface }: ProductCarouselProps) {
       {surface.isLoading ? (
         <div className="loading-grid">
           {PLACEHOLDERS.map((index) => (
-            <div key={index} className="loading-card"></div>
+            <SkeletonReveal key={index} delay={index * 0.16}>
+              <article className="loading-card">
+                <Skeleton className="skeleton-image" />
+                <Skeleton className="skeleton-line skeleton-brand" />
+                <Skeleton className="skeleton-line skeleton-product-name" />
+                <div className="skeleton-card-footer">
+                  <Skeleton className="skeleton-line skeleton-price" />
+                  <Skeleton className="skeleton-line skeleton-cta" />
+                </div>
+              </article>
+            </SkeletonReveal>
           ))}
         </div>
       ) : (
