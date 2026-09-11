@@ -1,8 +1,8 @@
 /* ============================================================================
    Conversational Discovery theme — professional, minimalist.
    Neutral slate surfaces, a single indigo accent, generous whitespace.
-   All component styles live here (the Angular original used per-component
-   style blocks; the React port consolidates them into one stylesheet).
+   Base component styles live here. Screen-width adaptations are consolidated
+   in responsive.css, imported after this file by main.tsx.
    ============================================================================ */
 
 html,
@@ -37,6 +37,13 @@ select {
   font: inherit;
 }
 
+.comparison-scroll:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+
 #root {
   --ink: #101828;
   --muted: #667085;
@@ -68,8 +75,9 @@ select {
   margin: 0 auto;
   /* Generous bottom padding so the conversation always clears the fixed
      follow-up bar pinned to the bottom of the viewport. */
-  padding: 28px 44px 230px;
+  padding: 28px 44px calc(var(--composer-height, 230px) + 24px);
   gap: 22px;
+  min-width: 0;
 }
 
 .workspace {
@@ -77,6 +85,7 @@ select {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  min-width: 0;
 }
 
 /* Row above the conversation box holding the "New conversation" + "History"
@@ -156,32 +165,6 @@ select {
   flex: 0 0 auto;
 }
 
-@media (max-width: 1024px) {
-  .storefront-header {
-    grid-template-columns: 1fr;
-    gap: 14px;
-  }
-  .storefront-brand {
-    grid-column: 1;
-    grid-row: 1;
-  }
-  .storefront-header-search {
-    grid-column: 1;
-    grid-row: 3;
-  }
-  .storefront-header-controls {
-    grid-column: 1;
-    grid-row: 2;
-    justify-self: end;
-  }
-  .workspace {
-    grid-template-columns: 1fr;
-  }
-  .transcript-panel {
-    min-height: unset;
-  }
-}
-
 .eyebrow,
 .panel-kicker {
   margin: 0 0 10px;
@@ -252,6 +235,7 @@ select {
   flex: 1;
   display: block;
   padding-right: 4px;
+  min-width: 0;
 }
 
 .turn {
@@ -259,6 +243,7 @@ select {
   flex-direction: column;
   gap: 14px;
   padding-bottom: 24px;
+  min-width: 0;
 }
 
 .turn-live {
@@ -293,6 +278,7 @@ select {
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.85);
   padding: 16px;
+  min-width: 0;
 }
 
 .progress-block {
@@ -376,6 +362,7 @@ select {
   margin: 0;
   line-height: 1.55;
   white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
 .bubble-markdown {
@@ -576,6 +563,7 @@ select {
   display: flex;
   flex-direction: column;
   gap: 18px;
+  min-width: 0;
 }
 
 .empty-state {
@@ -801,12 +789,6 @@ select {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-}
-
-@media (max-width: 720px) {
-  .dropdown-prompt-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .dropdown-prompt {
@@ -1102,16 +1084,6 @@ select {
 .newchat-icon {
   font-size: 1.05rem;
   line-height: 1;
-}
-
-/* On narrow viewports keep just the "+" so the cluster stays compact. */
-@media (max-width: 600px) {
-  .newchat-label {
-    display: none;
-  }
-  .newchat-button {
-    padding: 9px 12px;
-  }
 }
 
 .history {
@@ -1446,6 +1418,11 @@ select {
    Shared surface styles
    --------------------------------------------------------------------------- */
 
+.surface {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .surface-header {
   display: flex;
   align-items: center;
@@ -1533,6 +1510,7 @@ select {
   scroll-snap-type: x proximity;
   scroll-behavior: smooth;
   padding-bottom: 4px;
+  grid-template-rows: repeat(var(--carousel-rows, 1), minmax(0, 1fr));
 }
 
 .carousel-grid::-webkit-scrollbar {
@@ -1561,6 +1539,10 @@ select {
 @media (prefers-reduced-motion: reduce) {
   .skeleton {
     animation: none;
+  }
+
+  .carousel-grid {
+    scroll-behavior: auto;
   }
 }
 
@@ -1704,13 +1686,26 @@ select {
    Comparison table
    --------------------------------------------------------------------------- */
 
+.comparison-scroll {
+  max-width: 100%;
+  overflow-x: auto;
+  border-radius: 16px;
+}
+
+.comparison-label,
+.comparison-corner {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+}
+
 .comparison-grid {
   display: grid;
   gap: 0;
   border: 1px solid rgba(16, 24, 40, 0.1);
   border-radius: 16px;
-  overflow: hidden;
   background: rgba(255, 255, 255, 0.7);
+  width: 100%;
 }
 
 .comparison-cell {
@@ -1719,6 +1714,7 @@ select {
   border-bottom: 1px solid rgba(16, 24, 40, 0.08);
   line-height: 1.45;
   font-size: 0.94rem;
+  overflow-wrap: anywhere;
 }
 
 .comparison-cell:last-child {
@@ -1758,11 +1754,11 @@ select {
 }
 
 .comparison-corner {
-  background: var(--head-bg);
+  background: #f3f5f9;
 }
 
 .comparison-label {
-  background: rgba(243, 245, 249, 0.55);
+  background: #f3f5f9;
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -2007,12 +2003,6 @@ select {
   align-items: start;
 }
 
-@media (max-width: 720px) {
-  .research-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
 .research-product {
   border: 1px solid rgba(16, 24, 40, 0.1);
   border-radius: 16px;
@@ -2050,6 +2040,7 @@ select {
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-width: 0;
 }
 
 .research-summary-card {
@@ -2149,35 +2140,6 @@ select {
 .skeleton-research-line.line-3 { width: 88%; }
 .skeleton-research-line.line-4 { width: 82%; }
 .skeleton-research-line.line-5 { width: 76%; }
-
-/* ---------------------------------------------------------------------------
-   Responsive tweaks (ported from the Angular app.css)
-   --------------------------------------------------------------------------- */
-
-@media (max-width: 720px) {
-  .research-loading {
-    grid-template-columns: 1fr;
-  }
-
-  .shell {
-    padding-inline: 16px;
-  }
-
-  .bubble {
-    max-width: 100%;
-  }
-
-  .composer-actions,
-  .panel-header {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .primary-button,
-  .ghost-button {
-    width: 100%;
-  }
-}
 
 /* ---------------------------------------------------------------------------
    Answer / session feedback, turn status notices, export dialog, storage
@@ -2290,6 +2252,7 @@ select {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  overflow-wrap: anywhere;
 }
 
 .feedback-reasons {
@@ -2429,16 +2392,6 @@ select {
 .export-icon {
   font-size: 1rem;
   line-height: 1;
-}
-
-@media (max-width: 600px) {
-  .export-label {
-    display: none;
-  }
-
-  .export-button {
-    padding: 9px 12px;
-  }
 }
 
 .export-overlay {

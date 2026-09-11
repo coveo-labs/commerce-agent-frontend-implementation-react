@@ -1,0 +1,634 @@
+/* Responsive layout only. Imported after styles.css.
+Phone: <=720px (also used by useComposerViewport/useMobileTextarea).
+Tablet: 721–1200px. Compact controls: <=380px.
+Base styles own the desktop appearance and shared component behavior. */
+
+@media (min-width: 721px) and (max-width: 1200px) {
+  .shell {
+    padding-inline: 24px;
+  }
+
+  .storefront-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .storefront-brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .storefront-header-controls {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .storefront-header-search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Shared phone sizing */
+  .primary-button,
+  .ghost-button {
+    width: 100%;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  #root {
+    background: #f7f8fc;
+  }
+
+  .shell {
+    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right))
+      calc(var(--composer-height, 116px) + 24px) max(16px, env(safe-area-inset-left));
+    gap: 18px;
+  }
+
+  /* Storefront header and search */
+  .storefront-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 16px 8px;
+  }
+
+  .storefront-brand {
+    grid-column: 1;
+    grid-row: 1;
+    padding-top: 2px;
+    gap: 4px;
+  }
+
+  .storefront-brand-name {
+    white-space: normal;
+    font-size: 1rem;
+    line-height: 1.3;
+  }
+
+  .storefront-brand-sub {
+    font-size: 0.75rem;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: normal;
+  }
+
+  .storefront-header-controls {
+    grid-column: 2;
+    grid-row: 1;
+    gap: 6px;
+    max-width: 146px;
+  }
+
+  .storefront-header-search {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .conv-button,
+  .conn-button {
+    min-height: 44px;
+    padding: 10px 12px;
+    gap: 7px;
+    font-size: 0.875rem;
+  }
+
+  .conv-button-status,
+  .conn-status {
+    display: none;
+  }
+
+  .storefront-header.expanded .storefront-header-controls {
+    opacity: 1;
+  }
+
+  .search-shell {
+    padding: 4px 5px 4px 12px;
+    gap: 4px;
+    border-radius: 18px;
+    box-shadow: none;
+  }
+
+  .search-icon {
+    display: none;
+  }
+
+  .search-input {
+    font-size: 1rem;
+    padding: 10px 0;
+    width: 100%;
+  }
+
+  .search-submit {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 0.875rem;
+    border-radius: 13px;
+  }
+
+  .search-clear {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+  }
+
+  .generative-toggle {
+    min-width: 44px;
+    min-height: 44px;
+    justify-content: center;
+    padding: 4px;
+    border-radius: 12px;
+  }
+
+  .generative-toggle.checked {
+    background: var(--primary-soft);
+  }
+
+  .generative-toggle .toggle-track {
+    display: none;
+  }
+
+  .sparkle {
+    font-size: 1.4rem;
+  }
+
+  .search-hint {
+    padding-left: 4px;
+    font-size: 0.75rem;
+  }
+
+  .search-dropdown {
+    padding: 14px;
+    max-height: 48dvh;
+    overflow-y: auto;
+  }
+
+  .dropdown-prompt-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dropdown-prompt,
+  .dropdown-suggestion {
+    min-height: 44px;
+  }
+
+  /* Conversation navigation and transcript */
+  .workspace {
+    gap: 12px;
+  }
+
+  .workspace-controls {
+    justify-content: stretch;
+  }
+
+  .history-controls {
+    width: 100%;
+    gap: 8px;
+  }
+
+  .newchat-button,
+  .history-button,
+  .export-button {
+    min-height: 44px;
+    font-size: 0.875rem;
+    padding: 8px 12px;
+  }
+
+  .newchat-button {
+    margin-right: auto;
+  }
+
+  .newchat-label {
+    display: inline;
+  }
+
+  .newchat-icon {
+    font-size: 1rem;
+  }
+
+  .export-label {
+    display: none;
+  }
+
+  .panel {
+    padding: 18px 0;
+    border-radius: 0;
+    border: 0;
+    border-top: 1px solid var(--line);
+    box-shadow: none;
+    background: transparent;
+    backdrop-filter: none;
+  }
+
+  .panel-header {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .panel-kicker {
+    font-size: 0.75rem;
+    margin-bottom: 5px;
+    letter-spacing: 0.12em;
+  }
+
+  .panel-header h2 {
+    font-size: 1.125rem;
+  }
+
+  .panel-header .ghost-button {
+    width: auto;
+    min-height: 44px;
+    font-size: 0.875rem;
+  }
+
+  .transcript {
+    padding: 0;
+  }
+
+  .empty-state {
+    border: 0;
+    padding: 18px 0 8px;
+    background: transparent;
+  }
+
+  .empty-state-chips {
+    display: grid;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .empty-state-chip {
+    min-height: 52px;
+    padding: 14px 16px;
+    text-align: left;
+    border-radius: 14px;
+    background: white;
+    font-size: 1rem;
+  }
+
+  .turn {
+    gap: 14px;
+  }
+
+  .turn-live {
+    min-height: calc(100dvh - 180px);
+  }
+
+  .bubble {
+    padding: 14px 16px;
+    border-radius: 18px;
+    max-width: 100%;
+  }
+
+  .user-bubble {
+    max-width: 92%;
+    border-bottom-right-radius: 5px;
+  }
+
+  .assistant-bubble {
+    padding: 4px 0;
+    background: transparent;
+    border: none;
+  }
+
+  .bubble-role {
+    font-size: 0.75rem;
+  }
+
+  .progress-block {
+    max-width: 100%;
+  }
+
+  .progress-block summary {
+    min-height: 44px;
+  }
+
+  .inline-surfaces {
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+  }
+
+  /* Product surfaces */
+  .surface-stack {
+    gap: 24px;
+  }
+
+  .surface-header {
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .surface-header h3 {
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  .surface-kicker {
+    font-size: 0.75rem;
+  }
+
+  .carousel-controls {
+    margin-left: auto;
+  }
+
+  .carousel-count {
+    font-size: 0.875rem;
+  }
+
+  .carousel-arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  .carousel-grid {
+    grid-template-rows: 1fr;
+    grid-auto-columns: 84%;
+    gap: 12px;
+    scroll-snap-type: x mandatory;
+  }
+
+  .loading-grid {
+    grid-auto-flow: column;
+    grid-auto-columns: 84%;
+    grid-template-columns: none;
+    overflow-x: auto;
+  }
+
+  .product-card {
+    padding: 12px;
+  }
+
+  .product-card .brand {
+    font-size: 0.75rem;
+  }
+
+  .product-card h4 {
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .product-card .footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .price-group {
+    flex-wrap: wrap;
+  }
+
+  .view-details {
+    min-height: 44px;
+    font-size: 0.875rem;
+  }
+
+  .comparison-scroll {
+    border: 1px solid var(--line);
+  }
+
+  .comparison-grid {
+    border: 0;
+    border-radius: 0;
+  }
+
+  .comparison-cell {
+    padding: 12px;
+    font-size: 0.875rem;
+  }
+
+  .comparison-label {
+    font-size: 0.75rem;
+    letter-spacing: 0;
+  }
+
+  .comparison-brand {
+    font-size: 0.75rem;
+  }
+
+  .comparison-image {
+    max-width: 120px;
+  }
+
+  .slot-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .bundle-card,
+  .bundle-loading-card {
+    padding: 14px;
+  }
+
+  .slot-image {
+    max-height: 160px;
+    object-fit: contain;
+  }
+
+  .slot-label,
+  .bundle-total-label {
+    font-size: 0.75rem;
+  }
+
+  .bundle-total {
+    padding: 12px;
+    flex-wrap: wrap;
+  }
+
+  .summary {
+    padding: 16px;
+  }
+
+  .summary-lead {
+    flex-wrap: wrap;
+  }
+
+  .research-grid,
+  .research-loading {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .research-product {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .research-product-image {
+    width: 100px;
+    height: 100px;
+    margin: 0;
+  }
+
+  .research-product-meta {
+    min-width: 0;
+  }
+
+  .research-summary-card {
+    padding: 14px;
+  }
+
+  .actions button {
+    min-height: 44px;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+
+  /* Feedback controls */
+  .answer-feedback,
+  .turn-status {
+    max-width: 100%;
+  }
+
+  .feedback-thumb,
+  .history-delete {
+    min-width: 44px;
+    width: 44px;
+    height: 44px;
+  }
+
+  .feedback-edit,
+  .feedback-reason,
+  .session-outcome,
+  .history-new,
+  .conv-mode {
+    min-height: 44px;
+  }
+
+  .feedback-form-actions {
+    flex-wrap: wrap;
+  }
+
+  .session-feedback {
+    padding: 14px;
+  }
+
+  /* Composer; inset and measured spacing come from useComposerViewport */
+  .composer-bar {
+    bottom: var(--keyboard-inset, 0px);
+    padding: 10px max(16px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+    background: rgba(247,248,252,0.97);
+  }
+
+  .composer {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 8px;
+    align-items: end;
+  }
+
+  .composer-label {
+    grid-column: 1 / -1;
+    font-size: 0.75rem;
+    margin-bottom: 6px;
+  }
+
+  .composer textarea {
+    min-height: 48px;
+    padding: 12px;
+    font-size: 1rem;
+    border-radius: 16px;
+    resize: none;
+  }
+
+  .composer textarea::placeholder {
+    font-size: 1rem;
+  }
+
+  .composer-actions {
+    display: contents;
+  }
+
+  .composer-actions .primary-button {
+    grid-column: 2;
+    grid-row: 2;
+    width: auto;
+    min-width: 56px;
+    min-height: 48px;
+    padding: 10px 12px;
+    border-radius: 16px;
+    font-size: 0.875rem;
+    box-shadow: none;
+  }
+
+  .composer-actions .status-pill {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    padding: 4px 0 0;
+    background: none;
+    font-size: 0.75rem;
+  }
+
+  /* Popovers and export dialog */
+  .conv-popover,
+  .conn-popover,
+  .history-dropdown {
+    position: fixed;
+    top: max(76px, env(safe-area-inset-top));
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+    width: auto;
+    max-width: none;
+    max-height: 65dvh;
+    overflow-y: auto;
+  }
+
+  .conv-label {
+    font-size: 0.75rem;
+  }
+
+  .auth-token-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .auth-token-row {
+    flex-wrap: wrap;
+  }
+
+  input,
+  textarea,
+  select,
+  .auth-token-input,
+  .auth-token-select {
+    font-size: 1rem;
+  }
+
+  .export-overlay {
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .export-dialog {
+    max-height: 82dvh;
+    padding: 18px 16px max(18px, env(safe-area-inset-bottom));
+  }
+
+  .export-close {
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .storage-warning {
+    margin: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .newchat-label {
+    display: none;
+  }
+
+  .newchat-button {
+    min-width: 44px;
+    justify-content: center;
+  }
+}

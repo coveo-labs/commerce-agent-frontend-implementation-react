@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useComposerViewport } from './app/hooks/use-composer-viewport';
 import { AuthTokenInput } from './app/components/AuthTokenInput';
 import { ConversationHeader } from './app/components/ConversationHeader';
 import { ConversationHistory } from './app/components/ConversationHistory';
@@ -17,12 +18,13 @@ export default function App() {
   const conversation = useStoreState(conversationStore);
   const history = useStoreState(conversationHistoryStore);
   const [searchExpanded, setSearchExpanded] = useState(false);
+  const { shellRef, composerRef } = useComposerViewport();
   // The canned conversation starters (empty-state chips + popular-queries
   // grid) describe the mock catalog, so they only render in mock mode.
   const showStarters = conversation.agentMode !== 'live';
 
   return (
-    <main className="shell">
+    <main className="shell" ref={shellRef}>
       <header className={`storefront-header${searchExpanded ? ' expanded' : ''}`}>
         <div className="storefront-brand">
           <span className="storefront-brand-name">Conversational Discovery</span>
@@ -81,7 +83,7 @@ export default function App() {
         </article>
       </section>
 
-      <div className="composer-bar">
+      <div className="composer-bar" ref={composerRef}>
         <PromptComposer
           draft={conversation.draft}
           busy={conversation.busy}

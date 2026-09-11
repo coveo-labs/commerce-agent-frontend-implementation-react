@@ -7,8 +7,11 @@ type ComparisonTableProps = {
   surface: ComparisonTableSurface;
 };
 
+const ATTRIBUTE_MIN_WIDTH = 104;
+const PRODUCT_MIN_WIDTH = 160;
+
 export function ComparisonTable({ surface }: ComparisonTableProps) {
-  const gridColumns = `minmax(120px, auto) repeat(${surface.products.length}, minmax(0, 1fr))`;
+  const gridColumns = `minmax(${ATTRIBUTE_MIN_WIDTH}px, 0.65fr) repeat(${surface.products.length}, minmax(${PRODUCT_MIN_WIDTH}px, 1fr))`;
 
   return (
     <section className="surface">
@@ -48,41 +51,54 @@ export function ComparisonTable({ surface }: ComparisonTableProps) {
           </div>
         </div>
       ) : (
-        <div className="comparison-grid" style={{ gridTemplateColumns: gridColumns }}>
-          <div className="comparison-cell comparison-corner"></div>
-          {surface.products.map((product) => (
-            <div key={product.ec_product_id} className="comparison-cell comparison-head">
-              {product.ec_image && (
-                <img
-                  className="comparison-image"
-                  src={product.ec_image}
-                  alt={product.ec_name}
-                  loading="lazy"
-                  decoding="async"
-                />
-              )}
-              <span className="comparison-brand">{product.ec_brand}</span>
-              <strong>{product.ec_name}</strong>
-            </div>
-          ))}
+        <div
+          className="comparison-scroll"
+          role="region"
+          aria-label={`${surface.heading}. Scroll horizontally to compare all products.`}
+          tabIndex={0}
+        >
+          <div
+            className="comparison-grid"
+            style={{
+              gridTemplateColumns: gridColumns,
+              minWidth: ATTRIBUTE_MIN_WIDTH + surface.products.length * PRODUCT_MIN_WIDTH,
+            }}
+          >
+            <div className="comparison-cell comparison-corner"></div>
+            {surface.products.map((product) => (
+              <div key={product.ec_product_id} className="comparison-cell comparison-head">
+                {product.ec_image && (
+                  <img
+                    className="comparison-image"
+                    src={product.ec_image}
+                    alt={product.ec_name}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
+                <span className="comparison-brand">{product.ec_brand}</span>
+                <strong>{product.ec_name}</strong>
+              </div>
+            ))}
 
-          {surface.attributes.map((attribute) => (
-            <Fragment key={attribute}>
-              <div className="comparison-cell comparison-label">{formatLabel(attribute)}</div>
-              {surface.products.map((product) => (
-                <div key={product.ec_product_id} className="comparison-cell">
-                  {product[attribute] || '—'}
-                </div>
-              ))}
-            </Fragment>
-          ))}
+            {surface.attributes.map((attribute) => (
+              <Fragment key={attribute}>
+                <div className="comparison-cell comparison-label">{formatLabel(attribute)}</div>
+                {surface.products.map((product) => (
+                  <div key={product.ec_product_id} className="comparison-cell">
+                    {product[attribute] || '—'}
+                  </div>
+                ))}
+              </Fragment>
+            ))}
 
-          <div className="comparison-cell comparison-label">Price</div>
-          {surface.products.map((product) => (
-            <div key={product.ec_product_id} className="comparison-cell comparison-price">
-              {formatPrice(product.ec_promo_price ?? product.ec_price)}
-            </div>
-          ))}
+            <div className="comparison-cell comparison-label">Price</div>
+            {surface.products.map((product) => (
+              <div key={product.ec_product_id} className="comparison-cell comparison-price">
+                {formatPrice(product.ec_promo_price ?? product.ec_price)}
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </section>
