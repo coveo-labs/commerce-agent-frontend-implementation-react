@@ -2,4 +2,6 @@ node_modules
 dist
 *.local
 .DS_Store
-.claude
+# Local Claude Code state stays out of the repo; the shared skill is checked in.
+.claude/*
+!.claude/skills/
