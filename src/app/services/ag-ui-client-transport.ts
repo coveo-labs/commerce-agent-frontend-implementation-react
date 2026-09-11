@@ -1,3 +1,4 @@
+import { randomId } from '../random-id';
 // Alternative live transport based on the official AG-UI client SDK.
 // Exposes the SDK's subscribe-based stream through the same callback
 // observer contract as the custom-fetch transport.
@@ -23,14 +24,14 @@ export function streamAgUiClientTurn(
 
   const events = agent.run({
     threadId: input.threadId,
-    runId: crypto.randomUUID(),
+    runId: randomId(),
     state: {},
     tools: [],
     context: [],
     forwardedProps: {},
     messages: [
       {
-        id: crypto.randomUUID(),
+        id: randomId(),
         role: 'user',
         content: input.prompt,
       },
