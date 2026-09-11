@@ -1,3 +1,4 @@
+import { randomId } from '../random-id';
 // React port of the Angular DemoConversationFacade: owns the conversation
 // state (messages, surfaces, reasoning, tool activity, completed turns,
 // answer/session feedback, per-turn telemetry) and is the single entry point
@@ -793,7 +794,7 @@ function sanitizeErrorMessage(message: string): string {
 }
 
 function createId(): string {
-  return crypto.randomUUID();
+  return randomId();
 }
 
 function trimPreview(value: string, maxLength = 120): string {

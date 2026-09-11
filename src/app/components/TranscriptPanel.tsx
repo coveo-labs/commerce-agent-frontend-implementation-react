@@ -284,6 +284,10 @@ function scrollLiveTurnIntoView(host: HTMLElement | null, id: string): void {
   const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
   const distance = Math.min(offset, maxScroll) - start;
   if (Math.abs(distance) < 4) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    window.scrollTo(0, start + distance);
+    return;
+  }
   const duration = 320;
   const startTime = performance.now();
   const ease = (t: number) => 1 - Math.pow(1 - t, 3);

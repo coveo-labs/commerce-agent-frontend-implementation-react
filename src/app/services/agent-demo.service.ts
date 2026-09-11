@@ -1,3 +1,4 @@
+import { randomId } from '../random-id';
 // Main transport entry point for the React app.
 // The UI-facing contract is a callback-based stream of AG-UI events:
 // `streamTurn(input, mode, observer)` returns a cancel function.
@@ -120,12 +121,12 @@ async function runMockTurn(context: MockRunContext, sink: EventSink): Promise<vo
 }
 
 function createMockRunContext(input: StreamTurnInput): MockRunContext {
-  const messageId = crypto.randomUUID();
+  const messageId = randomId();
 
   return {
     input,
     scenario: getMockScenario(input.prompt),
-    runId: crypto.randomUUID(),
+    runId: randomId(),
     messageId,
     reasoningMessageId: `reasoning-${messageId}`,
   };
@@ -251,7 +252,7 @@ async function emitToolCallSequence(toolCalls: MockToolCall[], sink: EventSink):
 }
 
 async function emitToolCall(toolCall: MockToolCall, sink: EventSink): Promise<boolean> {
-  const toolCallId = crypto.randomUUID();
+  const toolCallId = randomId();
 
   if (
     !(await sink.emit(

@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, type CSSProperties } from 'react';
 import { productCta } from '../discovery-config';
 import { formatPrice } from '../formatting';
 import type { ProductCarouselSurface, ProductRecord } from '../models';
@@ -33,7 +33,8 @@ export function ProductCarousel({ surface }: ProductCarouselProps) {
       return;
     }
     const distance = Math.max(el.clientWidth - 80, 240);
-    el.scrollBy({ left: distance * direction, behavior: 'smooth' });
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+    el.scrollBy({ left: distance * direction, behavior });
   };
 
   return (
@@ -87,8 +88,8 @@ export function ProductCarousel({ surface }: ProductCarouselProps) {
           className="carousel-grid"
           ref={gridRef}
           style={{
-            gridTemplateRows: surface.products.length >= 8 ? 'repeat(2, minmax(0, 1fr))' : '1fr',
-          }}
+            '--carousel-rows': surface.products.length >= 8 ? 2 : 1,
+          } as CSSProperties}
         >
           {surface.products.map((item) => (
             // PRODUCT TILE = PDP link. The whole tile is the CTA: its href +
